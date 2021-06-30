@@ -21,17 +21,22 @@ public class ConversionHilo extends Thread {
 			out = new PrintWriter( clientSocket.getOutputStream(), true );
 			in = new BufferedReader(new InputStreamReader( clientSocket.getInputStream() ) );
 			
-			String monedaId;
-			while( (monedaId = in.readLine()) != null) {
-				if(".".contentEquals(monedaId)) {
-					out.println("good bye");
-					break;
-				}
+			String monedaIdAndCantidad;
+			while( (monedaIdAndCantidad = in.readLine()) != null) {
+				System.out.println("recibido del cliente_:" + monedaIdAndCantidad);
+				String[] arregloValores = monedaIdAndCantidad.split(";");
+				String monedaId = arregloValores[0];
+				String cantidad = arregloValores[1];
+								
 				TipoCambio tipoCambio = buscarTipoCambioPorId(monedaId);
+				Double cantidadDouble = Double.parseDouble(cantidad);		       
 				if(tipoCambio == null) {
 					out.println("No existe la conversion " + monedaId);
 				}else {
-					out.println( String.valueOf(tipoCambio.getFactorConversion()) );					
+					double resultado = cantidadDouble * tipoCambio.getFactorConversion();
+					String factorConversion = String.valueOf(tipoCambio.getFactorConversion());
+					String resultadoString = String.valueOf(resultado);
+					out.println( factorConversion +";"+resultadoString );					
 				}				
 			}
 			in.close();

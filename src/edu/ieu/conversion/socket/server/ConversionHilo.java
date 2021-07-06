@@ -52,4 +52,10 @@ public class ConversionHilo extends Thread {
 		return ConversionServer.cambioMoneda.get(id);		
 	}
 	
+	public void void1() {
+		short x = 125;
+		long y = x; // Wide
+		
+		int z = (int) y; // Narrow
+	}
 }
